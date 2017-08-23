@@ -1,36 +1,48 @@
 use std::collections::HashMap;
 
-let APRSIS_SERVERS: Vec<&str> = vec!["rotate.aprs.net", "noam.aprs2.net"];
-let APRSIS_SW_VERSION: String = "APRS Rust Module".to_string();
-let APRSIS_HTTP_HEADERS: HashMap<&str, &str> = HashMap::new()
-    .insert("content-type", "application/octet-stream")
-    .insert("accept", "text/plain");
-let APRISIS_FILTER_PORT: usize = 14580;
-let APRSIS_RX_PORT: usize = 8080;
-let APRSIS_URL: String = "http://srvr.aprs-is.net:8080".to_string();
+pub static APRSIS_SERVERS: Vec<&'static str> = ["rotate.aprs.net", "noam.aprs2.net"].to_vec();
+pub static APRSIS_SW_VERSION: &'static str = "APRS Rust Module";
 
-let RECV_BUFFER: usize = 1024;
+lazy_static! {
+    pub static ref APRSIS_HTTP_HEADERS: HashMap<&'static str, &'static str> = {
+        let mut h = HashMap::new();
+        h.insert("content-type", "application/octet-stream");
+        h.insert("accept", "text/plain");
+        h
+    };
+}
 
-let DEFAULT_TOCALL: String = "APYT70".to_string();
+pub static APRSIS_FILTER_PORT: usize = 14580;
+pub static APRSIS_RX_PORT: usize = 8080;
+pub static APRSIS_URL: &'static str = "http://srvr.aprs-is.net:8080";
 
-// AX.25 Flag - The flag field at each end of the frame is the bit sequence 0x7E that separates
-// each frame.
-let AX25_FLAG: String = "\x7E".to_string();
-// AX.25 Control Field - This field is set to 0x03 (UI-frame).
-let AX25_CONTROL_FIELD: String = "\x03".to_string();
-// AX.25 Protocol ID - This field is set to 0xF0 (no layer 3 protocol).
-// let AX25_PROTOCOL_ID: String = "\xF0".to_string();
-// A good place to split AX.25 address from information fields.
-let ADDR_INFO_DELIM: String = &AX25_CONTROL_FIELD + &AX25_PROTOCOL_ID;
+pub static RECV_BUFFER: usize = 1024;
 
-let DATA_TYPE_MAP: HashMap<&str, &str> = HashMap::new()
-    .insert(">", "status")
-    .insert("!", "position_nots_nomsg")
-    .insert("=", "position_nots_msg")
-    .insert("T", "telemetry")
-    .insert(";", "object")
-    .insert("`", "old_mice");
+pub static DEFAULT_TOCALL: &'static str = "APYT70";
 
-// KISS Command Codes
-// https://en.wikipedia.org/wiki/KISS_(TNC)#Command_Codes
-let KISS_DATA_FRAME: String = "\x00".to_string();
+/// AX.25 Flag - The flag field at each end of the frame is the
+///              bit sequence 0x7E that separates each frame.
+pub static AX25_FLAG: u8 = 0x7E;
+/// AX.25 Control Field - This field is set to 0x03 (UI-frame).
+pub static AX25_CONTROL_FIELD: u8 = 0x03;
+/// AX.25 Protocol ID - This field is set to 0xF0 (no layer 3 protocol).
+pub static AX25_PROTOCOL_ID: u8 = 0xF0;
+/// A good place to split AX.25 address from information fields.
+pub static ADDR_INFO_DELIM: String = format!("{}{}", &AX25_CONTROL_FIELD, &AX25_PROTOCOL_ID);
+
+lazy_static! {
+    pub static ref DATA_TYPE_MAP: HashMap<&'static str, &'static str> = {
+        let mut d = HashMap::new();
+        d.insert(">", "status");
+        d.insert("!", "position_nots_nomsg");
+        d.insert("=", "position_nots_msg");
+        d.insert("T", "telemetry");
+        d.insert(";", "object");
+        d.insert("`", "old_mice");
+        d
+    };
+}
+
+/// KISS Command Codes
+/// https://en.wikipedia.org/wiki/KISS_(TNC)#Command_Codes
+pub static KISS_DATA_FRAME: u8 = 0x00;

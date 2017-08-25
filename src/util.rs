@@ -1,18 +1,23 @@
 /// Validates an over-the-air callsign. APRS-IS is more forgiving.
 ///
-/// Verifies that a valid callsign is valid:
-/// >>> valid_callsign("W2GMD-1")
-/// true
+/// Valid callsigns are between 4 and 7 alphanumeric characters with at most a single hyphen `-`
+/// separating the callsign and the SSID suffix. This function validates the callsign's length,
+/// composition and SSID.
 ///
-/// Verifies that an invalid callsign is invalid:
-/// >>> valid_callsign("BURRITOS-99")
-/// false
+/// # Examples
 ///
-/// :param callsign: Callsign to validate.
-/// :type callsign: str
+/// ```rust
+/// assert_eq!(valid_callsign("W2GMD"), true);
+/// assert_eq!(valid_callsign("W2GMD-2"), true);
+/// assert_eq!(valid_callsign("W2GMD*"), true);
+/// ```
 ///
-/// :returns: True if valid, False otherwise.
-/// :rtype: bool
+/// ```rust
+/// assert_eq!(valid_callsign("W2GMD--1"), false);
+/// assert_eq!(valid_callsign("W2GMD- 1"), false);
+/// assert_eq!(valid_callsign("W2*MD-8"), false);
+/// ```
+///
 pub fn valid_callsign(callsign: &str) -> bool {
     let mut callsign: &str = callsign.trim_matches(|x| x == '*' || (x as char).is_whitespace());
     let mut ssid: &str = "0";
@@ -56,6 +61,6 @@ pub fn valid_callsign(callsign: &str) -> bool {
             }
         },
     }
-    // Return
+    // Callsign and SSID have passed all checks, so return true
     true
 }

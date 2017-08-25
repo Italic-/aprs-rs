@@ -5,3 +5,4 @@ authors = ["italic <italic.rendezvous@gmail.com>"]
 
 [dependencies]
 lazy_static = "0.2.8"
+log = "0.3.8"

@@ -1,6 +1,9 @@
 #[macro_use]
 extern crate lazy_static;
 
+#[macro_use]
+extern crate log;
+
 pub mod constants;
 pub use constants::{
     // LOG_FORMAT, LOG_LEVEL,

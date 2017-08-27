@@ -2,6 +2,8 @@
 //!
 //! Latitude and longitude may be translated from DM(S) (degrees, minutes, seconds (optionally)) to floating
 //! values and vice versa.
+//!
+//! For copyright information, see [LICENSE](LICENSE).
 
 /// Translate a floating point angle measure into degrees, minutes and seconds.
 ///
@@ -10,7 +12,7 @@
 /// # use aprs::decimaldegrees::decimal2dms;
 /// # fn main() {
 /// assert_eq!(decimal2dms(37.773972_f32), (37_f32, 46_f32, 26.297607_f32));
-/// assert_eq!(decimal2dms(-122.431297_f32), (-122_f32, 25_f32, 52.670288_f32));
+/// assert_eq!(decimal2dms(-122.43111_f32), (-122_f32, 25_f32, 51.983643_f32));
 /// # }
 /// ```
 pub fn decimal2dms(decimal_degrees: f32) -> (f32, f32, f32) {
@@ -28,8 +30,8 @@ pub fn decimal2dms(decimal_degrees: f32) -> (f32, f32, f32) {
 /// # extern crate aprs;
 /// # use aprs::decimaldegrees::decimal2dm;
 /// # fn main() {
-/// assert_eq!(decimal2dm(37.773972_f32), (37_f32, 46.438293_f32));
-/// assert_eq!(decimal2dm(-122.431297_f32), (-122_f32, 25.877838_f32));
+/// assert_eq!(decimal2dm(37.773888_f32), (37_f32, 46.433258_f32));
+/// assert_eq!(decimal2dm(-122.43111_f32), (-122_f32, 25.866394_f32));
 /// # }
 /// ```
 pub fn decimal2dm(decimal_degrees: f32) -> (f32, f32) {
@@ -45,8 +47,8 @@ pub fn decimal2dm(decimal_degrees: f32) -> (f32, f32) {
 /// # extern crate aprs;
 /// # use aprs::decimaldegrees::dms2decimal;
 /// # fn main() {
-/// assert_eq!(dms2decimal(37_f32, 46_f32, 26.2992_f32), 37.77397_f32);
-/// assert_eq!(dms2decimal(-122_f32, 25_f32, 52.6692_f32), -122.4313_f32);
+/// assert_eq!(dms2decimal(37_f32, 46_f32, 26_f32), 37.773888_f32);
+/// assert_eq!(dms2decimal(-122_f32, 25_f32, 52_f32), -122.43111_f32);
 /// # }
 /// ```
 pub fn dms2decimal(degrees: f32, minutes: f32, seconds: f32) -> f32 {
@@ -70,7 +72,7 @@ pub fn dms2decimal(degrees: f32, minutes: f32, seconds: f32) -> f32 {
 /// # use aprs::decimaldegrees::dm2decimal;
 /// # fn main() {
 /// assert_eq!(dm2decimal(37_f32, 46.43832_f32), 37.773972_f32);
-/// assert_eq!(dm2decimal(-122_f32, 25.87782_f32), -122.431297_f32);
+/// assert_eq!(dm2decimal(-122_f32, 25.877838_f32), -122.431297_f32);
 /// # }
 /// ```
 pub fn dm2decimal(degrees: f32, minutes: f32) -> f32 {

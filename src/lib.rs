@@ -34,3 +34,6 @@ pub use structs::{
     Frame, Callsign, APRS, TCP, UDP,
     HTTP, InformationField, PositionFrame
 };
+
+pub mod decimaldegrees;
+pub mod kiss_structs;

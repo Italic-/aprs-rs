@@ -7,15 +7,23 @@
 /// # Examples
 ///
 /// ```rust
+/// # extern crate aprs;
+/// # use aprs::util::valid_callsign;
+/// # fn main() {
 /// assert_eq!(valid_callsign("W2GMD"), true);
 /// assert_eq!(valid_callsign("W2GMD-2"), true);
 /// assert_eq!(valid_callsign("W2GMD*"), true);
+/// # }
 /// ```
 ///
 /// ```rust
+/// # extern crate aprs;
+/// # use aprs::util::valid_callsign;
+/// # fn main() {
 /// assert_eq!(valid_callsign("W2GMD--1"), false);
 /// assert_eq!(valid_callsign("W2GMD- 1"), false);
 /// assert_eq!(valid_callsign("W2*MD-8"), false);
+/// # }
 /// ```
 ///
 pub fn valid_callsign(callsign: &str) -> bool {

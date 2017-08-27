@@ -11,14 +11,14 @@ static INVALID_CALLSIGNS: &'static [&'static str; 8] = &[
 ];
 
 #[test]
-fn valid_callsign() {
+fn test_valid_callsign() {
     for sign in VALID_CALLSIGNS {
         assert_eq!(util::valid_callsign(sign), true);
     }
 }
 
 #[test]
-fn invalid_callsign() {
+fn test_invalid_callsign() {
     for sign in INVALID_CALLSIGNS {
         assert_eq!(util::valid_callsign(sign), false);
     }

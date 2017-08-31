@@ -11,8 +11,10 @@ fn test_dec2dm_lng() {
     assert_eq!(geo_util::dec2dm_lng(-122.431297_f32), "12225.88W".to_string())
 }
 
-// #[test]
-// #[ignore]
-// fn test_ambiguate() {
-//     assert_eq!(geo_util::ambiguate(), );
-// }
+#[test]
+fn test_ambiguate() {
+    let lat1: String = "12225.88W".to_string();
+    assert_eq!(geo_util::ambiguate(&lat1, 0), "12225.88W".to_string());
+    assert_eq!(geo_util::ambiguate(&lat1, 2), "12225.  W".to_string());
+    assert_eq!(geo_util::ambiguate(&lat1, 3), "1222 .  W".to_string());
+}

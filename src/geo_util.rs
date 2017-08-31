@@ -64,10 +64,33 @@ pub fn dec2dm_lng(dec: f32) -> String {
 /// # extern crate aprs;
 /// # use aprs::geo_util::ambiguate;
 /// # fn main() {
-/// assert_eq!(ambiguate(37.77397_f32, 0), "3746.44N".to_string());
-/// assert_eq!(ambiguate(37.77397_f32, 1), "3746.4 N".to_string());
-/// assert_eq!(ambiguate(37.77397_f32, 3), "374 .  N".to_string());
+/// assert_eq!(ambiguate("12225.88W", 0), "12225.88W".to_string());
+/// assert_eq!(ambiguate("12225.88W", 1), "12225.8 W".to_string());
+/// assert_eq!(ambiguate("12225.88W", 3), "1222 .  W".to_string());
 /// # }
 /// ```
-// pub fn ambiguate(pos: f32, ambiguity: u8) -> String {
-// }
+pub fn ambiguate(pos: &str, ambiguity: usize) -> String {
+    let mut amb: usize = ambiguity;
+    match ambiguity {
+        0 => {return pos.to_string();},
+        1...2 => {},
+        _ => {amb += 1;}
+    }
+
+    let start: usize = pos.len() - (amb + 1);
+    let end: usize = pos.len() - 1;
+
+    let mut pos_ambig: String = String::new();
+
+    for (ind, chr) in pos.char_indices() {
+        if ind >= start && ind < end {
+            match chr {
+                '.' => {pos_ambig.push(chr);},
+                _ => {pos_ambig.push(' ');},
+            }
+        } else {
+            pos_ambig.push(chr);
+        }
+    }
+    pos_ambig
+}

@@ -1,3 +1,5 @@
+//! Utilities for validating data.
+
 /// Validates an over-the-air callsign. APRS-IS is more forgiving.
 ///
 /// Valid callsigns are between 4 and 7 alphanumeric characters with at most a single hyphen `-`
@@ -42,7 +44,7 @@ pub fn valid_callsign(callsign: &str) -> bool {
     }
     // Validate callsign
     match callsign.len() {
-        4...6 => {},
+        3...6 => {},
         _ => {return false;},
     }
     for chr in callsign.chars() {

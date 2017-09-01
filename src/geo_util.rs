@@ -65,8 +65,8 @@ pub fn dec2dm_lng(dec: f32) -> String {
 /// # use aprs::geo_util::ambiguate;
 /// # fn main() {
 /// assert_eq!(ambiguate("12225.88W", 0), "12225.88W".to_string());
-/// assert_eq!(ambiguate("12225.88W", 1), "12225.8 W".to_string());
 /// assert_eq!(ambiguate("12225.88W", 3), "1222 .  W".to_string());
+/// assert_eq!(ambiguate("3746.44N", 1), "3746.4 N".to_string());
 /// # }
 /// ```
 pub fn ambiguate(pos: &str, ambiguity: usize) -> String {

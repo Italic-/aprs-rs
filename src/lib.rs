@@ -20,9 +20,6 @@
 #[macro_use]
 extern crate lazy_static;
 
-#[macro_use]
-extern crate log;
-
 pub mod constants;
 pub mod util;
 pub mod geo_util;

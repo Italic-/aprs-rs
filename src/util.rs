@@ -74,3 +74,63 @@ pub fn valid_callsign(callsign: &str) -> bool {
     // Callsign and SSID have passed all checks, so return true
     true
 }
+
+
+/// Hashing algorithm to generate a passcode for APRS-IS.
+/// Original code by Steve Dimse in the [aprsd package][1].
+///
+/// ```rust
+/// # extern crate aprs;
+/// # use aprs::util::aprspass;
+/// # fn main() {
+/// // Callsigns can be uppercase...
+/// assert_eq!(aprspass("W2GMD"), Some(10141));
+/// // ...or lowercase
+/// assert_eq!(aprspass("n6gso"), Some(13703));
+/// # }
+/// ```
+///
+/// ```text
+/// short doHash(const char *theCall) {
+///     char rootCall[10];            // need to copy call to remove ssid from parse
+///     char *p1 = rootCall;
+///
+///     while ((*theCall != '-') && (*theCall != 0)) *p1++ = toupper(*theCall++);
+///     *p1 = 0;
+///
+///     short hash = 0x73e2;          // Initialize with the key value
+///     short i = 0;
+///     short len = strlen(rootCall);
+///     char *ptr = rootCall;
+///
+///     while (i<len) {               // Loop through the string two bytes at a time
+///         hash ^= (*ptr++)<<8;      // xor high byte with accumulated hash
+///         hash ^= (*ptr++);         // xor low byte with accumulated hash
+///         i += 2;
+///     }
+///     return hash & 0x7fff;         // mask off the high bit so number is always positive
+/// }
+/// ```
+///
+/// [1]: ftp://ftp.tapr.org/software_lib/Linux/aprsd/
+pub fn aprspass(callsign: &str) -> Option<u16> {
+    match valid_callsign(callsign) {
+        false => return None,
+        true => (),
+    }
+    let mut hash: u16 = 0x73e2;
+
+    for chunk in callsign.to_uppercase().bytes().collect::<Vec<u8>>().chunks(2) {
+        match chunk.len() {
+            1 => {
+                hash = hash ^ ((chunk[0] as u16) << 8);
+            },
+            2 => {
+                hash = hash ^ ((chunk[0] as u16) << 8);
+                hash = hash ^ (chunk[1] as u16);
+            },
+            _ => {},
+        }
+    }
+    Some(hash & 0x7fff)
+}

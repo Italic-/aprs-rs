@@ -8,7 +8,7 @@ use std::collections::HashMap;
 /// Array of main APRS-IS servers
 pub static APRSIS_SERVERS: &'static [&'static str; 2] = &["rotate.aprs.net", "noam.aprs2.net"];
 /// Name of libary to present
-pub static APRSIS_SW_VERSION: &'static str = "APRS Rust Library";
+pub static APRSIS_SW_VERSION: &'static str = "APRS_Rust_Library";
 
 /// HTTP headers
 lazy_static! {
@@ -36,18 +36,18 @@ pub const AX25_CONTROL_FIELD: u8 = 0x03;
 /// AX.25 Protocol ID - This field is set to 0xF0 (no layer 3 protocol).
 pub const AX25_PROTOCOL_ID: u8 = 0xF0;
 /// A good place to split AX.25 address from information fields.
-pub const ADDR_INFO_DELIM: [u8; 2] = [0x03, 0xF0];
+pub const ADDR_INFO_DELIM: &'static [u8] = &[0x03, 0xF0];
 
 /// Data symbol map
 lazy_static! {
-    pub static ref DATA_TYPE_MAP: HashMap<&'static str, &'static str> = {
-        let mut d: HashMap<&'static str, &'static str> = HashMap::new();
-        d.insert(">", "status");
-        d.insert("!", "position_nots_nomsg");
-        d.insert("=", "position_nots_msg");
-        d.insert("T", "telemetry");
-        d.insert(";", "object");
-        d.insert("`", "old_mice");
+    pub static ref DATA_TYPE_MAP: HashMap<u8, &'static str> = {
+        let mut d: HashMap<u8, &'static str> = HashMap::new();
+        d.insert(b'>', "status");
+        d.insert(b'!', "position_nots_nomsg");
+        d.insert(b'=', "position_nots_msg");
+        d.insert(b'T', "telemetry");
+        d.insert(b';', "object");
+        d.insert(b'`', "old_mice");
         d
     };
 }

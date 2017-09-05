@@ -45,8 +45,62 @@ pub fn parse_frame_text(raw_frame: &[u8]) -> Frame {
 }
 
 pub fn parse_frame_ax25(raw_frame: &[u8]) -> Frame {
-    let parsed_frame: Frame = Frame::new();
-    parsed_frame
+    let mut _frame: &[u8] = raw_frame;
+    let mut kiss_call: bool = false;
+
+    if _frame.starts_with(&[constants::KISS_DATA_FRAME]) {
+        let mut ind: usize = 0;
+        for (id, byt) in _frame.iter().enumerate() {
+            if byt == &constants::KISS_DATA_FRAME {
+                continue;
+            } else {
+                ind = id;
+                break;
+            }
+        }
+        _frame = &_frame[ind..];
+        kiss_call = true;
+    }
+    if _frame.ends_with(&[constants::KISS_DATA_FRAME]) {
+        let mut ind: usize = 0;
+        for (id, byt) in _frame.iter().rev().enumerate() {
+            if byt == &constants::KISS_DATA_FRAME {
+                continue;
+            } else {
+                ind = id;
+                break;
+            }
+        }
+        _frame = &_frame[..(_frame.len() - ind)];
+        kiss_call = true;
+    }
+
+    let mut info_pos: usize = 0;
+    for win in _frame.windows(2) {
+        if win == constants::ADDR_INFO_DELIM {
+            break;
+        }
+        info_pos += 1;
+    }
+    let (frame_addressing, _) = _frame.split_at(info_pos);
+    let (_, mut info_field)   = _frame.split_at(info_pos + 2);
+    if info_field.ends_with(&[0xff, 0x07]) {
+        info_field = &info_field[..(info_field.len() - 2)];
+    }
+    let dest: Callsign = parse_callsign_ax25(&frame_addressing, kiss_call);
+    let src: Callsign = parse_callsign_ax25(&frame_addressing[7..], kiss_call);
+
+    let mut path: Vec<Callsign> = Vec::new();
+    for chunk in frame_addressing[14..].chunks(7) {
+        path.push(parse_callsign_ax25(chunk, false));
+    }
+
+    Frame {
+        source: src,
+        destination: dest,
+        path: path,
+        info: parse_info_field(info_field),
+    }
 }
 
 pub fn parse_callsign(raw_callsign: &[u8]) -> Callsign {
@@ -85,12 +139,11 @@ pub fn parse_callsign_ax25(raw_callsign: &[u8], kiss_call: bool) -> Callsign {
 }
 
 pub fn parse_info_field(raw_data: &[u8]) -> InformationField {
-    // TODO: use char to get map entry
     let first_byte: &u8 = raw_data.first().unwrap();
     let data_type: String = constants::DATA_TYPE_MAP.get(first_byte).unwrap().to_string();
     InformationField {
         data: raw_data.to_vec(),
-        data_type,
+        data_type: data_type,
         safe: true
     }
 }

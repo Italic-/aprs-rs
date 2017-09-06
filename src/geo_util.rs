@@ -26,14 +26,12 @@ use decimaldegrees;
 pub fn dec2dm_lat(dec: f32) -> String {
     let (deg, min): (f32, f32) = decimaldegrees::decimal2dm(dec);
     let deg_abs: f32 = deg.abs().trunc();
-    let mut suffix: &str = "";
     if deg.is_sign_positive() {
-        suffix = "N";
+        format!("{:02.0}{:05.2}N", deg_abs, min)
     }
     else {
-        suffix = "S";
+        format!("{:02.0}{:05.2}S", deg_abs, min)
     }
-    format!("{:02.0}{:05.2}{}", deg_abs, min, suffix)
 }
 
 /// Convert a longitude decimal to an APRS-compatible nine-character string.
@@ -48,14 +46,12 @@ pub fn dec2dm_lat(dec: f32) -> String {
 pub fn dec2dm_lng(dec: f32) -> String {
     let (deg, min): (f32, f32) = decimaldegrees::decimal2dm(dec);
     let deg_abs: f32 = deg.abs().trunc();
-    let mut suffix: &str = "";
     if deg.is_sign_positive() {
-        suffix = "E";
+        format!("{:03.0}{:05.2}E", deg_abs, min)
     }
     else {
-        suffix = "W";
+        format!("{:03.0}{:05.2}W", deg_abs, min)
     }
-    format!("{:03.0}{:05.2}{}", deg_abs, min, suffix)
 }
 
 /// Remove coordinate precision.

@@ -135,7 +135,38 @@ pub fn parse_callsign_text(raw_callsign: &[u8]) -> Callsign {
 }
 
 pub fn parse_callsign_ax25(raw_callsign: &[u8], kiss_call: bool) -> Callsign {
-    Callsign::new()
+    // based on ax.25 v2.0 protocol, NOT v2.2
+    let mut _callsign: Vec<u8> = Vec::new();
+    let mut digi: bool = false;
+
+    for chunk in raw_callsign[..6].iter() {
+        let mut _chunk = chunk & 0xFF;
+        // shift 1 bit
+        _chunk = _chunk >> 1;
+        if (_chunk as char).is_alphanumeric() {
+            _callsign.push(_chunk);
+        }
+    }
+
+    // seventh byte is ssid or digi
+    let seven_chunk: u8 = raw_callsign[6] & 0xFF;
+    let ssid = (seven_chunk >> 1) & 0x0F;
+
+    // fixme - see python module
+    if kiss_call {
+        if (seven_chunk >> 1 & 0x80) == 1 {
+            digi = true;
+        }
+    } else {
+        if (seven_chunk & 0x80) == 1 {
+            digi = true;
+        }
+    }
+    Callsign {
+        callsign: String::from_utf8(_callsign).unwrap(),
+        ssid: ssid,
+        digi: digi
+    }
 }
 
 pub fn parse_info_field(raw_data: &[u8]) -> InformationField {

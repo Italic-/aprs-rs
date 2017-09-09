@@ -179,6 +179,11 @@ pub fn parse_info_field(raw_data: &[u8]) -> InformationField {
     }
 }
 
-pub fn default_data_handler(data: &[u8], data_type: &str) -> String {
-    String::new()
+pub fn default_data_handler(data: &[u8], data_type: u8) -> InformationField {
+    let _data_type: String = constants::DATA_TYPE_MAP.get(&data_type).unwrap().to_string();
+    InformationField {
+        data: data.to_vec(),
+        data_type: _data_type,
+        safe: false
+    }
 }

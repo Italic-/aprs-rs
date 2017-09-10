@@ -6,9 +6,17 @@
 use std::collections::HashMap;
 
 /// Array of main APRS-IS servers
-pub static APRSIS_SERVERS: &'static [&'static str; 2] = &["rotate.aprs.net", "noam.aprs2.net"];
+pub static APRSIS_SERVERS: &'static [&'static str; 7] = &[
+    "rotate.aprs.net",
+    "rotate.aprs2.net",
+    "noam.aprs2.net",
+    "euro.aprs2.net",
+    "aunz.aprs2.net",
+    "soam.aprs2.net",
+    "asia.aprs2.net"
+];
 /// Name of libary to present
-pub static APRSIS_SW_VERSION: &'static str = "APRS_Rust_Library";
+pub static APRSIS_SW_VERSION: &'static str = "APRSrust";
 
 /// HTTP headers
 lazy_static! {

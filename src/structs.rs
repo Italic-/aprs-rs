@@ -5,6 +5,7 @@
 
 use constants;
 use functions;
+use geo_util;
 
 
 pub struct Frame {
@@ -55,7 +56,66 @@ impl Frame {
     }
 }
 
-pub struct PositionFrame;
+pub struct PositionFrame {
+    pub source: Callsign,
+    pub destination: Callsign,
+    pub path: Vec<Callsign>,
+    pub info: InformationField,
+    pub comment: Vec<u8>,
+    pub table: Vec<u8>,
+    pub symbol: u8,
+    pub lat: f32,
+    pub lng: f32,
+    pub ambiguity: usize
+}
+
+impl PositionFrame {
+    pub fn new() -> PositionFrame {
+        PositionFrame {
+            source: Callsign::new(),
+            destination: Callsign::new(),
+            path: Vec::new(),
+            info: InformationField::new(),
+            comment: Vec::new(),
+            table: Vec::new(),
+            symbol: 0,
+            lat: 0.0,
+            lng: 0.0,
+            ambiguity: 0
+        }
+    }
+}
+
+impl PositionFrame {
+    pub fn set_source(&mut self, source: &[u8]) {
+        self.source = functions::parse_callsign(source);
+    }
+    pub fn set_destination(&mut self, dest: &[u8]) {
+        self.destination = functions::parse_callsign(dest);
+    }
+    pub fn set_path(&mut self, path: Vec<Vec<u8>>) {
+        for pth in path {
+            let byts: &[u8] = pth.as_slice();
+            self.path.push(functions::parse_callsign(byts));
+        }
+    }
+    pub fn create_info_field(&self) -> Vec<u8> {
+        let lat = geo_util::dec2dm_lat(self.lat);
+        let lat_enc = geo_util::ambiguate(&lat, self.ambiguity);
+        let lng = geo_util::dec2dm_lng(self.lng);
+        let lng_enc = geo_util::ambiguate(&lng, self.ambiguity);
+
+        let mut frame: Vec<u8> = Vec::new();
+        frame.push(b'=');
+        frame.extend(lat_enc.as_bytes());
+        frame.extend(&self.table);
+        frame.extend(lng_enc.as_bytes());
+        frame.push(self.symbol);
+        frame.extend(&self.comment);
+
+        frame
+    }
+}
 
 pub struct Callsign {
     pub callsign: String,

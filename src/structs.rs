@@ -99,6 +99,9 @@ impl PositionFrame {
             self.path.push(functions::parse_callsign(byts));
         }
     }
+    pub fn update_info(&mut self) {
+        self.info = functions::parse_info_field(&self.create_info_field());
+    }
     pub fn create_info_field(&self) -> Vec<u8> {
         let lat = geo_util::dec2dm_lat(self.lat);
         let lat_enc = geo_util::ambiguate(&lat, self.ambiguity);

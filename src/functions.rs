@@ -5,7 +5,6 @@
 
 use structs::{Frame, Callsign, InformationField};
 use constants;
-use util;
 
 
 pub fn parse_frame(raw_frame: &[u8]) -> Frame {

@@ -115,8 +115,7 @@ pub fn parse_callsign_text(raw_callsign: &[u8]) -> Callsign {
         _callsign.trim_matches('*');
         digi = true;
     }
-    let pos: Option<usize> = _callsign.find('-');
-    match pos {
+    match _callsign.find('-') {
         Some(x) => {
             _callsign = {
                 let (call, id): (&str, &str) = _callsign.split_at(x);

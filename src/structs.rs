@@ -103,9 +103,9 @@ impl PositionFrame {
         self.info = functions::parse_info_field(&self.create_info_field());
     }
     pub fn create_info_field(&self) -> Vec<u8> {
-        let lat = geo_util::dec2dm_lat(self.lat);
+        let lat     = geo_util::dec2dm_lat(self.lat);
         let lat_enc = geo_util::ambiguate(&lat, self.ambiguity);
-        let lng = geo_util::dec2dm_lng(self.lng);
+        let lng     = geo_util::dec2dm_lng(self.lng);
         let lng_enc = geo_util::ambiguate(&lng, self.ambiguity);
 
         let mut frame: Vec<u8> = Vec::new();

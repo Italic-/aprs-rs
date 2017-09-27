@@ -20,6 +20,9 @@
 #[macro_use]
 extern crate lazy_static;
 
+extern crate byteorder;
+extern crate bit_vec;
+
 pub mod constants;
 pub mod util;
 pub mod geo_util;

@@ -6,5 +6,5 @@ authors = ["italic <italic.rendezvous@gmail.com>"]
 [dependencies]
 # log = "0.3.8"
 lazy_static = "0.2.8"
-# byteorder = "1.1.0"
-# unicode-segmentation = "1.1.0"
+byteorder = "1.1.0"
+bit-vec = "0.4.4"

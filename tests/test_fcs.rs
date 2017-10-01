@@ -8,7 +8,7 @@ use data_encoding::HEXLOWER as HEX;
 mod test_constants;
 
 #[test]
-//#[ignore]
+#[ignore]
 fn test_fcs_checksum() {
 }
 

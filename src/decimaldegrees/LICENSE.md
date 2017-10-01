@@ -1,4 +1,4 @@
-PyDecimalDegrees - geographic coordinates conversion utility.
+% PyDecimalDegrees - geographic coordinates conversion utility.
 
 Copyright (C) 2006-2013 by Mateusz Łoskot <mateusz@loskot.net>
 Copyright (C) 2010-2013 by Evan Wheeler <ewheeler@unicef.org>

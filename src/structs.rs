@@ -6,6 +6,7 @@
 use constants;
 use functions;
 use geo_util;
+use fcs::FCS;
 
 
 pub struct Frame {
@@ -43,7 +44,6 @@ impl Frame {
         self.info = functions::parse_info_field(info);
     }
     pub fn encode_ax25(&self) -> Vec<u8> {
-        // TODO: find a way to return raw bytes
         let mut encoded_frame: Vec<u8> = Vec::new();
         encoded_frame.push(constants::AX25_FLAG);
         encoded_frame.extend(self.destination.encode_ax25());
@@ -52,6 +52,13 @@ impl Frame {
             encoded_frame.extend(path_call.encode_ax25());
         }
         encoded_frame.extend(self.info.data.as_slice());
+
+        let mut fcs: FCS = FCS::new();
+        fcs.update_bytes(&encoded_frame);
+
+        encoded_frame.extend(fcs.digest());
+        encoded_frame.push(constants::AX25_FLAG);
+
         encoded_frame
     }
 }

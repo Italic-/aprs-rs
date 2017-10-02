@@ -63,7 +63,7 @@ pub fn valid_callsign(callsign: &str) -> bool {
         }
     }
     match ssid.parse::<usize>()  {
-        Err(e) => {return false;},
+        Err(_) => {return false;},
         Ok(s) => {
             match s {
                 0...15 => {},
